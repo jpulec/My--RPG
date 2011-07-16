@@ -1,0 +1,4 @@
+#Name               Types                       Size    ATK DEF WTC HTC ACC USE
+Hand Gun;           WTC;                        4;      0;  0;  4;  0;  95; 30;
+MedKit;             HTC;                        2;      0;  0;  0;  12; 100;NA;    
+Broom;              WPN;                        6;      3;  0;  0;  0;  92; NA;                                                                      
