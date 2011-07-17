@@ -159,7 +159,7 @@ class Map:
         self.mapPieceLength = int(GlobalData.mapsData[self.name][1])
         self.hasMonsters = GlobalData.mapsData[self.name][2] == "True"
         self.monsters = string.split(GlobalData.mapsData[self.name][3], ',')
-        self.monsters[len(self.monsters)-1] = self.monsters[len(self.monsters)-1]
+        #self.monsters[len(self.monsters)-1] = self.monsters[len(self.monsters)-1]      Useless?
         self.numMonsters = int(GlobalData.mapsData[self.name][4])
         self.freq = int(GlobalData.mapsData[self.name][5])                   
     

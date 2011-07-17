@@ -48,6 +48,7 @@ def getItemData():
 statsData = getStats()
 mapsData = getMapData()
 itemData = getItemData()
-
+quitFlag = 0
+textureManager = 
 
        
