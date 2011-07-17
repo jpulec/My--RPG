@@ -1,4 +1,6 @@
 import string
+import ImageData
+import DisplayInfo
 
     #self.maps = self.getMaps()
 
@@ -49,6 +51,8 @@ statsData = getStats()
 mapsData = getMapData()
 itemData = getItemData()
 quitFlag = 0
-textureManager = 
+textureManager = ImageData.ImageData()
+displayInitialized = 0
+display = DisplayInfo.DisplayInfo() 
 
        

@@ -10,17 +10,15 @@ import GlobalData
 import PlayerData
 
 
-def loadBattleTextures(textureManager):
-    textureManager.loadTexture("battle","images/battle/BattleCursor.png", -1)
+def loadBattleTextures():
+    GlobalData.textureManager.loadTexture("battle","images/battle/BattleCursor.png", -1)
     for y in range(4):
         for x in range(2):
-            textureManager.spriteRects["battle"].append(pygame.rect.Rect(x*24,y*24,24,24))
+            GlobalData.textureManager.spriteRects["battle"].append(pygame.rect.Rect(x*24,y*24,24,24))
 
 
 class Battle:
-    def __init__(self, textureManager, display, currMap, team, player):
-        self.textureManager = textureManager
-        self.display = display
+    def __init__(self, currMap, team, player):
         self.map = currMap
         self.numMonsters = random.randint(1,self.map.numMonsters)
         self.monsterNames = []
@@ -35,12 +33,12 @@ class Battle:
             self.monsters.append(Creature.Creature(x))
         self.monArray = [[None for i in range(3)] for j in range(3)]
         self.monArrayNum = 0            
-        self.battleMenu = TextBox.BattleMenu(self.display, self.textureManager, 360, 312, ["Attack", "WTC", "HTC", "Item", "Run"])
-        self.battleBox = TextBox.BattleBox(self.display, self.textureManager)
+        self.battleMenu = TextBox.BattleMenu(360, 312, ["Attack", "WTC", "HTC", "Item", "Run"])
+        self.battleBox = TextBox.BattleBox()
         self.selection = 0
         self.battleBool = True
-        self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
-        self.display.getScreen().blit(self.textureManager.textures[self.player.currentSkin][0], (504,96), self.textureManager.spriteRects[self.player.currentSkin][13])
+        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
+        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.player.currentSkin][0], (504,96), GlobalData.textureManager.spriteRects[self.player.currentSkin][13])
         self.teamNum = 0
         self.selectedMember = self.team.team[self.teamNum]
         self.selectedMemNum = 13
@@ -75,7 +73,7 @@ class Battle:
                         if self.battleBool == False:
                             break        
                     self.actions.remove(self.highestAction)
-                    self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+                    GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
                     for x in self.team.team:
                         if float(x.attributes.stats[0])*.8 <= x.HP:
                             if x.currentSkin.count('-') == 0:
@@ -103,7 +101,7 @@ class Battle:
                             else:
                                 x.currentSkin = x.currentSkin[:-2] + "20"                                     
                     for x in range(len(self.team.team)):
-                         self.display.getScreen().blit(self.textureManager.textures[self.team.team[x].currentSkin][0], (504,96+x*32), self.textureManager.spriteRects[self.team.team[x].currentSkin][13])    
+                         GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.team.team[x].currentSkin][0], (504,96+x*32), GlobalData.textureManager.spriteRects[self.team.team[x].currentSkin][13])    
                     self.drawStats()
                     for x in self.monsters:
                         if x.HP <= 0:
@@ -133,7 +131,7 @@ class Battle:
                             self.team.team.remove(x)
                     if len(self.team.team) == 0:
                         for x in self.monsters:
-                            x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                            x.display( self.monArray, self.monArrayNum)
                             self.monArrayNum += 1
                         self.monArrayNum = 0
                         self.battleBox.addText("Game Over...")
@@ -149,7 +147,7 @@ class Battle:
                                         self.open = False
                                         return    
                     for x in self.monsters:
-                        x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                        x.display( self.monArray, self.monArrayNum)
                         self.monArrayNum += 1
                     self.monArrayNum = 0
                     self.battleBox.show()
@@ -168,11 +166,11 @@ class Battle:
                         pygame.time.delay(300)
                         self.open = False            
                 self.executeMoves = False                                    
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             if self.selectedMemNum != 17: 
-                self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - self.selectedMemNum%13*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][self.selectedMemNum])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - self.selectedMemNum%13*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][self.selectedMemNum])
             else:
-                self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.drawStats()     #for testing
             #first player up
             #print self.monsters
@@ -216,21 +214,21 @@ class Battle:
                                 self.open = False
                                 return    
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display(self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0
             self.battleBox.show()
             self.battleMenu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (442, 316), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (442, 316), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (442, 316+24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (442, 316+24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (442, 316+48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (442, 316+48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (442, 316+72), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (442, 316+72), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 4:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (442, 316+96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (442, 316+96), GlobalData.textureManager.spriteRects["battle"][1])
             self.flipScreenBuffer()
             #print self.selectedMemNum
             pygame.time.delay(75)
@@ -295,11 +293,11 @@ class Battle:
                                 self.teamNum = 0
                                 self.executeMoves = True
                             for x in range(4):    
-                                self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
-                                self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
+                                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
+                                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
                                 self.drawStats()   
                                 for x in self.monsters:
-                                    x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                                    x.display( self.monArray, self.monArrayNum)
                                     self.monArrayNum += 1
                                 self.monArrayNum = 0
                                 self.battleBox.show()
@@ -316,9 +314,9 @@ class Battle:
     def drawStats(self):
         pygame.font.init()
         self.font = pygame.font.Font(None, 24)
-        self.display.getScreen().blit(self.font.render(str(Attributes.attributeNames), 0, (255,255,255)), (24,24))
-        self.display.getScreen().blit(self.font.render(str(self.player.attributes.stats), 0, (255,255,255)), (24,48))
-        self.display.getScreen().blit(self.font.render("HP:" + str(self.player.HP), 0, (255,255,255)), (24,72))    
+        GlobalData.display.getScreen().blit(self.font.render(str(Attributes.attributeNames), 0, (255,255,255)), (24,24))
+        GlobalData.display.getScreen().blit(self.font.render(str(self.player.attributes.stats), 0, (255,255,255)), (24,48))
+        GlobalData.display.getScreen().blit(self.font.render("HP:" + str(self.player.HP), 0, (255,255,255)), (24,72))    
 
     def enemyActions(self):
         #print "Enemy monsters"
@@ -415,31 +413,31 @@ class Battle:
                 if y.strip() == "ITEM":
                     self.itemList.append(x.name)
         if len(self.itemList) == 0:
-            self.textBox(self.display, self.textureManager, 192, 312, "No items!              ")
+            self.textBox(GlobalData.display, GlobalData.textureManager, 192, 312, "No items!              ")
             return                      
-        self.itemMenu = TextBox.BattleMenu(self.display, self.textureManager, 192, 312, self.itemList)
+        self.itemMenu = TextBox.BattleMenu(GlobalData.display, GlobalData.textureManager, 192, 312, self.itemList)
         self.selectionitem = 0
         while self.itemBool:
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             self.drawStats()
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display( self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0    
-            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
             self.itemMenu.show()
             if self.selectionitem == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+72), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+72), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == 4:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+96), GlobalData.textureManager.spriteRects["battle"][1])
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -482,34 +480,34 @@ class Battle:
         self.selectionitem = (0,0)
         self.itemChoice = itemItem
         while self.itemBool:
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             self.drawStats()
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display( self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0    
-            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
             self.itemMenu.show()
             if self.selectionitem == (0,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 96), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 96), GlobalData.textureManager.spriteRects["battle"][1])                 
             elif self.selectionitem == (0,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 144 + 24), self.textureManager.spriteRects["battle"][1])              
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])              
             elif self.selectionitem == (0,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 196 + 48), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])                 
             elif self.selectionitem == (1,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 96), self.textureManager.spriteRects["battle"][1])              
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 96), GlobalData.textureManager.spriteRects["battle"][1])              
             elif self.selectionitem == (1,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 144 + 24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == (1,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 196 + 48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == (2,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == (2,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 144 + 24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionitem == (2,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 196 + 48), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])                 
             self.flipScreenBuffer()                  
             for e in pygame.event.get():
                 self.noChange = False        
@@ -565,11 +563,11 @@ class Battle:
                             self.teamNum = 0
                             self.executeMoves = True
                         for x in range(4):    
-                            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
-                            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
                             self.drawStats()   
                             for x in self.monsters:
-                                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                                x.display( self.monArray, self.monArrayNum)
                                 self.monArrayNum += 1
                             self.monArrayNum = 0
                             self.battleBox.show()
@@ -615,33 +613,33 @@ class Battle:
         self.attackBool = True
         self.selectionAttack = (0,0)
         while self.attackBool:
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             self.drawStats()
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display( self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0    
-            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
             if self.selectionAttack == (0,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 96), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 96), GlobalData.textureManager.spriteRects["battle"][1])                 
             elif self.selectionAttack == (0,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 144 + 24), self.textureManager.spriteRects["battle"][1])              
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])              
             elif self.selectionAttack == (0,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 196 + 48), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])                 
             elif self.selectionAttack == (1,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 96), self.textureManager.spriteRects["battle"][1])              
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 96), GlobalData.textureManager.spriteRects["battle"][1])              
             elif self.selectionAttack == (1,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 144 + 24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionAttack == (1,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 196 + 48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionAttack == (2,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionAttack == (2,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 144 + 24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionAttack == (2,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 196 + 48), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])                 
             self.flipScreenBuffer()                  
             for e in pygame.event.get():
                 self.noChange = False        
@@ -701,11 +699,11 @@ class Battle:
                             self.teamNum = 0
                             self.executeMoves = True
                         for x in range(4):    
-                            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
-                            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
                             self.drawStats()   
                             for x in self.monsters:
-                                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                                x.display( self.monArray, self.monArrayNum)
                                 self.monArrayNum += 1
                             self.monArrayNum = 0
                             self.battleBox.show()
@@ -725,31 +723,31 @@ class Battle:
                 if y.strip() == "WTC":
                     self.WTCList.append(x.name)
         if len(self.WTCList) == 0:
-            self.textBox(self.display, self.textureManager, 192, 312, "No WTC!              ")
+            self.textBox(GlobalData.display, GlobalData.textureManager, 192, 312, "No WTC!              ")
             return                      
-        self.WTCMenu = TextBox.BattleMenu(self.display, self.textureManager, 192, 312, self.WTCList)
+        self.WTCMenu = TextBox.BattleMenu(GlobalData.display, GlobalData.textureManager, 192, 312, self.WTCList)
         self.selectionWTC = 0
         while self.WTCBool:
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             self.drawStats()
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display( self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0    
-            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
             self.WTCMenu.show()
             if self.selectionWTC == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+72), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+72), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == 4:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+96), GlobalData.textureManager.spriteRects["battle"][1])
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -792,34 +790,34 @@ class Battle:
         self.selectionWTC = (0,0)
         self.WTCChoice = WTCItem
         while self.WTCBool:
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             self.drawStats()
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display( self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0    
-            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
             self.WTCMenu.show()
             if self.selectionWTC == (0,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 96), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 96), GlobalData.textureManager.spriteRects["battle"][1])                 
             elif self.selectionWTC == (0,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 144 + 24), self.textureManager.spriteRects["battle"][1])              
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])              
             elif self.selectionWTC == (0,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 196 + 48), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (128, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])                 
             elif self.selectionWTC == (1,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 96), self.textureManager.spriteRects["battle"][1])              
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 96), GlobalData.textureManager.spriteRects["battle"][1])              
             elif self.selectionWTC == (1,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 144 + 24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == (1,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (214, 196 + 48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (214, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == (2,0):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == (2,1):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 144 + 24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 144 + 24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionWTC == (2,2):
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 196 + 48), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (316, 196 + 48), GlobalData.textureManager.spriteRects["battle"][1])                 
             self.flipScreenBuffer()                  
             for e in pygame.event.get():
                 self.noChange = False        
@@ -875,11 +873,11 @@ class Battle:
                             self.teamNum = 0
                             self.executeMoves = True
                         for x in range(4):    
-                            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
-                            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
                             self.drawStats()   
                             for x in self.monsters:
-                                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                                x.display( self.monArray, self.monArrayNum)
                                 self.monArrayNum += 1
                             self.monArrayNum = 0
                             self.battleBox.show()
@@ -928,31 +926,31 @@ class Battle:
                 if y.strip() == "HTC":
                     self.HTCList.append(x.name)
         if len(self.HTCList) == 0:
-            self.textBox(self.display, self.textureManager, 192, 312, "No HTC!              ")
+            self.textBox(GlobalData.display, GlobalData.textureManager, 192, 312, "No HTC!              ")
             return                      
-        self.HTCMenu = TextBox.BattleMenu(self.display, self.textureManager, 192, 312, self.HTCList)
+        self.HTCMenu = TextBox.BattleMenu(GlobalData.display, GlobalData.textureManager, 192, 312, self.HTCList)
         self.selectionHTC = 0
         while self.HTCBool:
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             self.drawStats()
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display( self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0    
-            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
             self.HTCMenu.show()
             if self.selectionHTC == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionHTC == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+24), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+24), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionHTC == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionHTC == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+72), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+72), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selectionHTC == 4:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (334, 316+96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (334, 316+96), GlobalData.textureManager.spriteRects["battle"][1])
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -995,22 +993,22 @@ class Battle:
         self.selectionHTC = 0
         self.HTCChoice = HTCItem
         while self.HTCBool:
-            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
             self.drawStats()
             for x in self.monsters:
-                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                x.display( self.monArray, self.monArrayNum)
                 self.monArrayNum += 1
             self.monArrayNum = 0    
-            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
             self.HTCMenu.show()
             if self.selectionHTC == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (528, 96), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (528, 96), GlobalData.textureManager.spriteRects["battle"][1])                 
             elif self.selectionHTC == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (528, 144), self.textureManager.spriteRects["battle"][1])              
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (528, 144), GlobalData.textureManager.spriteRects["battle"][1])              
             elif self.selectionHTC == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (528, 196), self.textureManager.spriteRects["battle"][1])                 
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (528, 196), GlobalData.textureManager.spriteRects["battle"][1])                 
 
             self.flipScreenBuffer()                  
             for e in pygame.event.get():
@@ -1048,11 +1046,11 @@ class Battle:
                             self.teamNum = 0
                             self.executeMoves = True
                         for x in range(4):    
-                            self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
-                            self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
+                            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.selectedMember.currentSkin][0], (504 - (3-x)*6,96), GlobalData.textureManager.spriteRects[self.selectedMember.currentSkin][16-x])    
                             self.drawStats()   
                             for x in self.monsters:
-                                x.display(self.textureManager, self.display, self.monArray, self.monArrayNum)
+                                x.display( self.monArray, self.monArrayNum)
                                 self.monArrayNum += 1
                             self.monArrayNum = 0
                             self.battleBox.show()

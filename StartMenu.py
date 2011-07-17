@@ -12,9 +12,7 @@ import PlayerData
 
 
 class StartMenu:
-    def __init__(self, textureManager, display, currMap, team, player):
-        self.textureManager = textureManager
-        self.display = display
+    def __init__(self, currMap, team, player):
         self.map = currMap
         self.team = team
         self.font = pygame.font.Font(None, 24)
@@ -23,27 +21,27 @@ class StartMenu:
         pygame.display.flip()    
 
     def menuMain(self):
-        self.menu = TextBox.StartMenu(self.display, self.textureManager, self.map, self.team)
+        self.menu = TextBox.StartMenu(self.map, self.team)
         self.open = True
         self.selection = 0
         while(True):
             self.menu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+32), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+32), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+64), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+64), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 4:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+128), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+128), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 5:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+160), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+160), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 6:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+192), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+192), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 7:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+224), self.textureManager.spriteRects["battle"][1])        
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+224), GlobalData.textureManager.spriteRects["battle"][1])        
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -84,17 +82,17 @@ class StartMenu:
                             break
                         elif self.selection == 7:
                             self.menu.show()
-                            self.box = TextBox.TextBox(self.display, self.textureManager, 144, 144, "  Are you sure you want to quit?")
+                            self.box = TextBox.TextBox(144, 144, "  Are you sure you want to quit?")
                             self.boxOpen = True
                             self.select = 1
                             
                             while self.boxOpen:
                                 self.box.draw()
-                                self.display.getScreen().blit(self.font.render("            Yes            No", 0, (255,255,255)), (168, 168))
+                                GlobalData.display.getScreen().blit(self.font.render("            Yes            No", 0, (255,255,255)), (168, 168))
                                 if self.select == 0:
-                                    self.display.getScreen().blit(self.textureManager.textures["battle"][0], (264, 168), self.textureManager.spriteRects["battle"][1])
+                                    GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (264, 168), GlobalData.textureManager.spriteRects["battle"][1])
                                 elif self.select == 1:
-                                    self.display.getScreen().blit(self.textureManager.textures["battle"][0], (336, 168), self.textureManager.spriteRects["battle"][1])
+                                    GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (336, 168), GlobalData.textureManager.spriteRects["battle"][1])
                                 pygame.display.flip()       
                                 for e in pygame.event.get():
                                     if e.type == QUIT:
@@ -142,13 +140,13 @@ class StartMenu:
         while not self.chosen:
             self.menu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+32), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+64), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+96), self.textureManager.spriteRects["battle"][1])    
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -177,13 +175,13 @@ class StartMenu:
         while not self.chosen:
             self.menu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+32), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+64), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+96), self.textureManager.spriteRects["battle"][1])    
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -212,13 +210,13 @@ class StartMenu:
         while not self.chosen:
             self.menu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+32), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+64), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+96), self.textureManager.spriteRects["battle"][1])    
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -247,13 +245,13 @@ class StartMenu:
         while not self.chosen:
             self.menu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+32), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+64), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+96), self.textureManager.spriteRects["battle"][1])    
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -282,13 +280,13 @@ class StartMenu:
         while not self.chosen:
             self.menu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+32), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+64), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+96), self.textureManager.spriteRects["battle"][1])    
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -317,13 +315,13 @@ class StartMenu:
         while not self.chosen:
             self.menu.show()
             if self.selection == 0:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+32), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 2:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+64), self.textureManager.spriteRects["battle"][1])
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
-                self.display.getScreen().blit(self.textureManager.textures["battle"][0], (216, 96+96), self.textureManager.spriteRects["battle"][1])    
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:

@@ -3,23 +3,22 @@ from pygame.locals import *
 import ImageData
 import DisplayInfo
 import pygame.time
+import GlobalData
 
-def loadTextImages(graphicsData, xNum, yNum, alpha = None):
-    graphicsData.loadTexture("text", "images/textbox/box.PNG", alpha)
+def loadTextImages(xNum, yNum, alpha = None):
+    GlobalData.textureManager.loadTexture("text", "images/textbox/box.PNG", alpha)
     for y in range(0,xNum):
         for x in range(0,yNum):
-            graphicsData.spriteRects["text"].append(pygame.rect.Rect(x*24,y*24,24,24))
+            GlobalData.textureManager.spriteRects["text"].append(pygame.rect.Rect(x*24,y*24,24,24))
 
 
 class TextBox:
-    def __init__(self, display, graphicsData, x, y, text = ""):
+    def __init__(self, x, y, text = ""):
         self.font = pygame.font.Font(None, 24)
         self.x = x
         self.y = y
-        self.display = display
-        self.graphicsData = graphicsData
-        self.maxWidth = self.display.getScreenWidth() - 96        
-        self.maxLength = self.display.getScreenHeight() - 96
+        self.maxWidth = GlobalData.display.getScreenWidth() - 96        
+        self.maxLength = GlobalData.display.getScreenHeight() - 96
         self.width = 48
         self.height = 48         
         self.text = text
@@ -38,37 +37,37 @@ class TextBox:
                 if x == 0:
                     if y == 0:
                         #print "topleft"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][1])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
                     elif y == len(final_lines)-1:
                         #print "botleft"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][7])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
                     else:
                         #print "midleft"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][4])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
                 elif x == self.xCount - 1 :
                     if y == 0:
                         #print "topright"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][3])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
                     elif y == len(final_lines)-1:
                         #print "botright"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][9])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
                     else:
                         #print "midright"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][6])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
                 else:
                     if y == 0:
                         #print "topmid"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][2])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
                     elif y == len(final_lines)-1:
                         #print "botmid"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][8])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
                         #print "center"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][5])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])
                       
         self.yPlus = 0
         for x in final_lines:               
-            self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
+            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
             self.yPlus += 24        
     
     def draw(self): 
@@ -107,29 +106,29 @@ class TextBox:
             for y in range(self.yCount):
                 if x == 0:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][1])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
                     elif y == len(final_lines):
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][7])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][4])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
                 elif x == self.xCount - 1 :
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][3])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
                     elif y == len(final_lines):
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][9])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][6])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
                 else:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][2])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
                     elif y == len(final_lines):
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][8])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][5])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])
                       
         self.yPlus = 0
         for x in final_lines:               
-            self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
+            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
             self.yPlus += 24        
         #pygame.display.flip()
     
@@ -146,14 +145,12 @@ class TextBox:
         self.text = text
 
 class BattleMenu:
-    def __init__(self, display, graphicsData, x, y, lines):
+    def __init__(self, x, y, lines):
         self.font = pygame.font.Font(None, 24)
         self.x = x
         self.y = y
-        self.display = display
-        self.graphicsData = graphicsData
-        self.maxWidth = self.display.getScreenWidth() - 96        
-        self.maxLength = self.display.getScreenHeight() - 96
+        self.maxWidth = GlobalData.display.getScreenWidth() - 96        
+        self.maxLength = GlobalData.display.getScreenHeight() - 96
         self.width = 148
         self.height = 48         
         self.lines = lines
@@ -182,49 +179,47 @@ class BattleMenu:
                 if x == 0:
                     if y == 0:
                         #print "topleft"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][1])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
                     elif y == self.yCount-1:
                         #print "botleft"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][7])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
                     else:
                         #print "midleft"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][4])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
                 elif x == self.xCount - 1 :
                     if y == 0:
                         #print "topright"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][3])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
                     elif y == self.yCount-1:
                         #print "botright"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][9])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
                     else:
                         #print "midright"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][6])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
                 else:
                     if y == 0:
                         #print "topmid"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][2])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
                     elif y == self.yCount-1:
                         #print "botmid"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][8])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
                         #print "center"
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][5])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])
                       
         self.yPlus = 0
         for x in final_lines:            
-            self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
+            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
             self.yPlus += 24     
     
 
 
 
 class BattleBox:
-    def __init__(self, display, graphicsData, text = ""):
+    def __init__(self, text = ""):
         self.font = pygame.font.Font(None, 24)
         self.x = 24
         self.y = 312
-        self.display = display
-        self.graphicsData = graphicsData
         self.maxWidth = 312 - 96        
         self.maxLength = 312 - 96
         self.width = 312
@@ -273,28 +268,28 @@ class BattleBox:
             for y in range(self.yCount):
                 if x == 0:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][1])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
                     elif y == self.yCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][7])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][4])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
                 elif x == self.xCount - 1 :
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][3])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
                     elif y == self.yCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][9])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][6])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
                 else:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][2])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
                     elif y == self.yCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][8])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][5])                  
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])                  
         self.yPlus = 0
         for x in self.lines:            
-            self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
+            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
             self.yPlus += 24        
         #pygame.display.flip()
     
@@ -309,13 +304,11 @@ class BattleBox:
 
 
 class StartMenu:
-    def __init__(self, display, graphicsData, themap, team):
+    def __init__(self, themap, team):
         self.font = pygame.font.Font(None, 24)
         self.x = 48
         self.y = 48
         self.team = team
-        self.display = display
-        self.graphicsData = graphicsData
         self.width = 456-96
         self.height = 456-96     
         self.lines = []
@@ -357,35 +350,35 @@ class StartMenu:
                 self.lines[4] = requested_lines  
 
     def show(self):
-        self.display.getScreen().fill((0,0,0))
+        GlobalData.display.getScreen().fill((0,0,0))
         self.xCount = 15
         self.yCount = 15
         for x in range(self.xCount):
             for y in range(self.yCount):
                 if x == 0:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][1])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
                     elif y == self.yCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][7])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][4])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
                 elif x == self.xCount - 1 :
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][3])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
                     elif y == self.yCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][9])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][6])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
                 else:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][2])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
                     elif y == self.yCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][8])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (self.x + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][5])                  
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])                  
         self.yPlus = 0
         for x in self.lines:            
-            self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
+            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
             self.yPlus += 24        
 
 
@@ -396,34 +389,34 @@ class StartMenu:
             for y in range(self.otheryCount):
                 if x == 0:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][1])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
                     elif y == self.otheryCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][7])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][4])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
                 elif x == self.otherxCount - 1:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][3])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
                     elif y == self.otheryCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][9])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][6])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
                 else:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][2])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
                     elif y == self.otheryCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][8])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, self.y + y*24), self.graphicsData.spriteRects["text"][5])                  
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])                  
         self.yPlus = 0
         for x in self.menuLines:            
-            self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, self.y + self.yPlus + 4))
+            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, self.y + self.yPlus + 4))
             self.yPlus += 32        
 
         self.yPlus = 0
         for x in self.team.team:
-            self.display.getScreen().blit(self.graphicsData.textures[x.currentSkin][0], (96,96), self.graphicsData.spriteRects[x.currentSkin][self.facing])
-            self.display.getScreen().blit(self.font.render(x.name, 0, (255,255,255)), (144, 96 + self.yPlus))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[x.currentSkin][0], (96,96), GlobalData.textureManager.spriteRects[x.currentSkin][self.facing])
+            GlobalData.display.getScreen().blit(self.font.render(x.name, 0, (255,255,255)), (144, 96 + self.yPlus))
             self.facing += 1
             if self.facing == 13:
                 self.facing  = 9
@@ -445,35 +438,35 @@ class StartMenu:
             final_lines.append(accumulated_line)
         else: 
             final_lines = requested_lines
-        self.displayLines = final_lines
+        GlobalData.displayLines = final_lines
         self.otherxCount = 6
         self.otheryCount = 4
         for x in range(self.otherxCount):
             for y in range(self.otheryCount):
                 if x == 0:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][1])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][1])              
                     elif y == self.otheryCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][7])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][7])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][4])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][4])
                 elif x == self.otherxCount - 1:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][3])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][3])              
                     elif y == self.otheryCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][9])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][9])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][6])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][6])
                 else:
                     if y == 0:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][2])              
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][2])              
                     elif y == self.otheryCount-1:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][8])
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
-                        self.display.getScreen().blit(self.graphicsData.textures["text"][0], (456-48 + x*24, 312 + y*24), self.graphicsData.spriteRects["text"][5])                  
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][5])                  
         self.yPlus = 0
-        for x in self.displayLines:            
-            self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, 312 + self.yPlus + 4))
+        for x in GlobalData.displayLines:            
+            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, 312 + self.yPlus + 4))
             self.yPlus += 32        
         #pygame.display.flip()
         #pygame.time.delay(150)

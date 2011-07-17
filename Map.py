@@ -9,19 +9,18 @@ import GlobalData
 import Item
 
 
-def loadTileSet(mapName, graphicsData, xNum, yNum, alpha = None):
-    graphicsData.loadTexture(mapName,"images/" + mapName, alpha)
+def loadTileSet(mapName, xNum, yNum, alpha = None):
+    GlobalData.textureManager.loadTexture(mapName,"images/" + mapName, alpha)
     for y in range(0,xNum):
         for x in range(0,yNum):
-            graphicsData.spriteRects[mapName].append(pygame.rect.Rect(x*24,y*24,24,24))
+            GlobalData.textureManager.spriteRects[mapName].append(pygame.rect.Rect(x*24,y*24,24,24))
             
-def loadBattleBG(mapName, graphicsData, alpha = None):
-    graphicsData.loadTexture("bg", "images/battle/bg/" + mapName +str(".png"), alpha)            
+def loadBattleBG(mapName, alpha = None):
+    GlobalData.textureManager.loadTexture("bg", "images/battle/bg/" + mapName +str(".png"), alpha)            
 
 class MapTile:
-    def __init__(self, textureManager, display):
-        self.textureManager = textureManager
-        self.display = display
+    def __init__(self):
+
         self.text = ""
         self.name = ""
         self.collision = 0
@@ -45,9 +44,9 @@ class MapTile:
         if self.tileSetName != "":
             #print self.name
             if self.backRect is not None:
-                self.display.blit(self.textureManager.textures[self.tileSetName][0], (x,y), self.backRect)
-            #self.display.fill((0,0,0), pygame.rect.Rect(x,y,24,24)) 
-            self.display.blit(self.textureManager.textures[self.tileSetName][0], (x, y), self.rect)
+                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.tileSetName][0], (x,y), self.backRect)
+            #GlobalData.display.getScreen().fill((0,0,0), pygame.rect.Rect(x,y,24,24)) 
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.tileSetName][0], (x, y), self.rect)
     
     def setRect(self, rect):
         self.rect = rect
@@ -122,9 +121,8 @@ class MapPiece:
         return self.name            
                     
 class Map:
-    def __init__(self, mapName, graphicsData, display, startPieceName, startPieceOffsetX, startPieceOffsetY):
-        self.display = display.getScreen()
-        self.textureManager = graphicsData
+    def __init__(self, mapName, startPieceName, startPieceOffsetX, startPieceOffsetY):
+
         self.name = mapName
         self.mapPieceWidth = None
         self.mapPieceLength = None
@@ -133,9 +131,9 @@ class Map:
         self.numMonsters = None
         self.freq = None
         self.getMapData()
-        self.objectManager = ObjectManager(self.textureManager, self.display)
+        self.objectManager = ObjectManager()
         self.collisionRects = [[pygame.Rect(0,0,0,0) for i in range(19)] for j in range(25)]
-        self.mapPieces = [[MapTile(self.textureManager, self.display) for i in range(self.mapPieceWidth)] for j in range(self.mapPieceLength)]
+        self.mapPieces = [[MapTile() for i in range(self.mapPieceWidth)] for j in range(self.mapPieceLength)]
         self.currentPiece = None
         self.startPieceOffsetX = startPieceOffsetX
         self.startPieceOffsetY = startPieceOffsetY 
@@ -145,13 +143,13 @@ class Map:
         self.Xoff = 0
         self.Yoff = 0
         self.loadMap(mapName)
-        self.allTiles = [[MapTile(self.textureManager, self.display) for i in range(30*self.mapPieceWidth)] for j in range(30*self.mapPieceLength)]
+        self.allTiles = [[MapTile() for i in range(30*self.mapPieceWidth)] for j in range(30*self.mapPieceLength)]
         self.getAllTiles()
         self.getCollisionRects()
         if self.hasMonsters == True:
-            loadBattleBG(mapName, graphicsData)
-            #print self.textureManager.textures["bg"]
-            self.battleBG = self.textureManager.textures["bg"]
+            loadBattleBG(mapName)
+            #print GlobalData.textureManager.textures["bg"]
+            self.battleBG = GlobalData.textureManager.textures["bg"]
             #self.monsters = ["creep", "goblin"]
             
     def getMapData(self):
@@ -212,7 +210,7 @@ class Map:
         
     def loadMapPiece(self, name, xNum, yNum, mapPieceName):
         self.file = "data/" + name[:-2] + "/" + name
-        self.workingMap = [[MapTile(self.textureManager, self.display) for i in range(30)] for j in range(30)]
+        self.workingMap = [[MapTile() for i in range(30)] for j in range(30)]
         self.tmpList = []
         self.fileToLoad = open(self.file, 'r')
         for x in range(30):
@@ -228,7 +226,7 @@ class Map:
                     self.workingMap[x][y].rect = pygame.Rect(int(self.tmpList[3]), int(self.tmpList[4]),24,24)    
                 if self.tmpList[5] != "":
                     self.workingMap[x][y].tileSetName = self.tmpList[5]
-                    self.workingMap[x][y].tileSet = self.textureManager.textures[self.tmpList[5]][0]
+                    self.workingMap[x][y].tileSet = GlobalData.textureManager.textures[self.tmpList[5]][0]
                 self.splitList = self.tmpList[6].split(';')
                 for z in self.splitList:
                     if self.splitList[0] != "":
@@ -264,24 +262,24 @@ class Map:
         #print "X:" + str(self.Xoff)
         #print "PrevX:" + str(self.prevXoff)         
         if self.Xoff > self.prevXoff:
-            self.display.fill((0,0,0))    
+            GlobalData.display.getScreen().fill((0,0,0))    
             self.currentPiece.draw((self.Xoff%24), self.Yoff%24)
             #print "Left"
         elif self.Xoff < self.prevXoff:
             #print 24 - (self.Xoff%24)
-            self.display.fill((0,0,0))        
+            GlobalData.display.getScreen().fill((0,0,0))        
             self.currentPiece.draw(-(24-(self.Xoff%24)), self.Yoff%24)
             #print "Right"
         elif self.Yoff < self.prevYoff:
-            self.display.fill((0,0,0))        
+            GlobalData.display.getScreen().fill((0,0,0))        
             self.currentPiece.draw(self.Xoff%24, -(24 - (self.Yoff%24)))
             #print "Up"
         elif self.Yoff > self.prevYoff:
-            self.display.fill((0,0,0))        
+            GlobalData.display.getScreen().fill((0,0,0))        
             self.currentPiece.draw(self.Xoff%24, (self.Yoff%24))
             #print "Down"
         elif self.Xoff%24 == 0 and self.Yoff%24 == 0:
-            self.display.fill((0,0,0))        
+            GlobalData.display.getScreen().fill((0,0,0))        
             self.currentPiece.draw(self.Xoff%24, self.Yoff%24)
             #print "Stop"  
         
@@ -341,9 +339,8 @@ class Object(GameObject.GameObject):
 
         
 class ObjectManager:
-    def __init__(self, graphicsData, surf):
-        self.surf = surf
-        self.graphicsData = graphicsData
+    def __init__(self):
+        self.surf = GlobalData.display.getScreen()
         self.objects = []
         self.collisionRects = []
         self.Xoff = 0
@@ -352,7 +349,7 @@ class ObjectManager:
         
     def makeObjects(self, low, high, collision, name):
         for x in range(low, high):
-            self.objects.append(Object(self.graphicsData, name, self.surf, x, collision))    
+            self.objects.append(Object(name, self.surf, x, collision))    
         
                 
     def drawObjects(self):
