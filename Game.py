@@ -5,7 +5,7 @@ import pygame.time
 import ImageData
 pygame.init()
 import DisplayInfo
-import PlayerData
+import CharacterData
 import Map
 import TextBox
 import Creature
@@ -15,13 +15,14 @@ import TeamData
 import Item
 import Battle
 import StartMenu
+import PlayerData
 
 
 
 class GameLoop:
     def __init__(self):
         self.timer = pygame.time.Clock()
-        self.player = PlayerData.PlayerData()
+        self.player = PlayerData.PlayerData("Rena")
         self.team = TeamData.TeamData()
         self.maps = dict()
         
@@ -38,7 +39,6 @@ class GameLoop:
             self.initDisplay()
             self.initPlayer()
         pygame.key.set_repeat(75, 75)       
-        self.team.add(self.player)
         TextBox.loadTextImages(3, 3, -1)
         Battle.loadBattleTextures()
         Creature.loadCreatureImages()
@@ -174,7 +174,7 @@ class GameLoop:
                 pygame.time.delay(50)         
 
     def battle(self):
-        self.instance = Battle.Battle(self.map, self.team, self.player)
+        self.instance = Battle.Battle(self.map, self.team)
         self.instance.battleMain()
                         
     def portal(self):
@@ -200,6 +200,8 @@ class GameLoop:
     def initPlayer(self):
         PlayerData.loadPlayerGraphics("rena", "nightgown")
         self.player.currentSkin = "rena_nightgown"
+        self.team.add("Rena", CharacterData.CharacterData("Rena"))
+        self.team.team["Rena"].currentSkin = "rena_nightgown"
         self.player.setPosition(288, 192)
         self.player.display()
         
@@ -300,7 +302,7 @@ class GameLoop:
 
     def gotItem(self, x, y, mapTile):
         for z in mapTile.contents:
-            self.player.shit.append(z)
+            self.team.shit.append(z)
             self.box = TextBox.TextBox(x, y, "You receieved " + z.name + ".")
             mapTile.contents.remove(z)
             self.open = True

@@ -15,7 +15,7 @@ def getMapData():
         mapData[tmpList[0]] = tmpList[1:]
         #print self.mapData[self.tmpList[0]]
         #print self.mapData[self.tmpList[0]][len(self.mapData[self.tmpList[0]])-1]
-        mapData[tmpList[0]][len(mapData[tmpList[0]])-1]
+        #mapData[tmpList[0]][len(mapData[tmpList[0]])-1]  #does this do anything??? Doesn't appear so....
     fileToLoad.close()
     return mapData   
 

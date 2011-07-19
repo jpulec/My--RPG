@@ -1,11 +1,12 @@
 class TeamData:
     def __init__(self):
-        self.team = []
+        self.team = dict()
         self.money = 100
+        self.shit = []
 
 
-    def add(self, member):
-        self.team.append(member)
+    def add(self, name, character):
+        self.team[name] = character
 
-    def remove(self, member):
-        self.team.remove(member)        
+    def remove(self, name):
+        del self.team[name]        

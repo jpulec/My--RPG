@@ -8,6 +8,7 @@ from pygame.locals import *
 import pygame.time
 import GlobalData
 import PlayerData
+import TeamData
 
 
 def loadBattleTextures():
@@ -18,13 +19,12 @@ def loadBattleTextures():
 
 
 class Battle:
-    def __init__(self, currMap, team, player):
+    def __init__(self, currMap, team):
         self.map = currMap
         self.numMonsters = random.randint(1,self.map.numMonsters)
         self.monsterNames = []
         self.monsters = []
         self.team = team
-        self.player = player
         self.font = pygame.font.Font(None, 24)
         for x in range(self.numMonsters):
             self.monster = random.randint(0, len(self.map.monsters)-1)
@@ -38,9 +38,13 @@ class Battle:
         self.selection = 0
         self.battleBool = True
         GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
-        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.player.currentSkin][0], (504,96), GlobalData.textureManager.spriteRects[self.player.currentSkin][13])
+        self.height = 0
+        for v in self.team.team.itervalues():
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[v.currentSkin][0], (504,96+self.height*32), GlobalData.textureManager.spriteRects[v.currentSkin][13])
+            self.height+=1
         self.teamNum = 0
-        self.selectedMember = self.team.team[self.teamNum]
+        self.iterator = self.team.team.itervalues()
+        self.selectedMember = self.iterator.next()
         self.selectedMemNum = 13
         self.actions = []
         self.executeMoves = False
@@ -74,7 +78,7 @@ class Battle:
                             break        
                     self.actions.remove(self.highestAction)
                     GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
-                    for x in self.team.team:
+                    for x in self.team.team.itervalues():
                         if float(x.attributes.stats[0])*.8 <= x.HP:
                             if x.currentSkin.count('-') == 0:
                                 x.currentSkin = x.currentSkin
@@ -100,8 +104,10 @@ class Battle:
                                 x.currentSkin = x.currentSkin + "-20"
                             else:
                                 x.currentSkin = x.currentSkin[:-2] + "20"                                     
-                    for x in range(len(self.team.team)):
-                         GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.team.team[x].currentSkin][0], (504,96+x*32), GlobalData.textureManager.spriteRects[self.team.team[x].currentSkin][13])    
+                    self.height = 0                    
+                    for x in self.team.team.itervalues():
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[x.currentSkin][0], (504,96+self.height*32), GlobalData.textureManager.spriteRects[x.currentSkin][13])
+                        self.height += 1    
                     self.drawStats()
                     for x in self.monsters:
                         if x.HP <= 0:
@@ -124,11 +130,14 @@ class Battle:
                                     if e.key == K_RETURN:
                                         self.open = False
                         #Won battle
-                        return
+                        self.ret = []
+                        for x in self.team.team.itervalues():
+                            self.ret.append(x.currentSkin)
+                        return self.ret
 
-                    for x in self.team.team:
+                    for x in self.team.team.values():
                         if x.HP <= 0:
-                            self.team.team.remove(x)
+                            self.team.team.pop(x.name)
                     if len(self.team.team) == 0:
                         for x in self.monsters:
                             x.display( self.monArray, self.monArrayNum)
@@ -195,11 +204,14 @@ class Battle:
                             if e.key == K_RETURN:
                                 self.open = False
                 #Won battle
-                return
+                self.ret = []
+                for x in self.team.team.itervalues():
+                    self.ret.append(x.currentSkin)
+                return self.ret
 
-            for x in self.team.team:
+            for x in self.team.team.values():
                 if x.HP <= 0:
-                    self.team.team.remove(x)
+                    self.team.team.pop(x.name)
             if len(self.team.team) == 0:
                 self.battleBox.addText("Game Over...")
                 GlobalData.quitFlag = 1
@@ -305,7 +317,12 @@ class Battle:
                                 pygame.time.delay(75)
                                 self.flipScreenBuffer()
                             self.selectedMemNum = 13        
-                            self.selectedMember = self.team.team[self.teamNum]
+                            try:                        
+                                self.selectedMember = self.iterator.next()
+                                break
+                            except StopIteration:
+                                self.iterator = self.team.team.itervalues()
+                                self.selectedMember = self.iterator.next()
                             
                             break                                                                   
                 pygame.event.pump()
@@ -315,8 +332,8 @@ class Battle:
         pygame.font.init()
         self.font = pygame.font.Font(None, 24)
         GlobalData.display.getScreen().blit(self.font.render(str(Attributes.attributeNames), 0, (255,255,255)), (24,24))
-        GlobalData.display.getScreen().blit(self.font.render(str(self.player.attributes.stats), 0, (255,255,255)), (24,48))
-        GlobalData.display.getScreen().blit(self.font.render("HP:" + str(self.player.HP), 0, (255,255,255)), (24,72))    
+        GlobalData.display.getScreen().blit(self.font.render(str(self.team.team["Rena"].attributes.stats), 0, (255,255,255)), (24,48))
+        GlobalData.display.getScreen().blit(self.font.render("HP:" + str(self.team.team["Rena"].HP), 0, (255,255,255)), (24,72))    
 
     def enemyActions(self):
         #print "Enemy monsters"
@@ -353,7 +370,7 @@ class Battle:
                 self.num += 1
                 self.itemTrue = True
             self.act = random.randint(0,self.num)
-            self.actedOn = random.randint(0,len(self.team.team)-1)
+            self.actedOn = random.choice(self.team.team.keys())
             
             if self.act == 0:
                 tmp = [x, "ATTACK", self.team.team[self.actedOn]]
@@ -398,7 +415,10 @@ class Battle:
                         elif e.type == KEYDOWN:
                             if e.key == K_RETURN:
                                 self.open = False
-                return
+                self.ret = []
+                for x in self.team.team.itervalues():
+                    self.ret.append(x.currentSkin)
+                return self.ret
             else:
                 #couldnt run
                 self.battleBox.addText("Couldn't get away!")
@@ -575,7 +595,12 @@ class Battle:
                             pygame.time.delay(75)
                             self.flipScreenBuffer()
                         self.selectedMemNum = 13    
-                        self.selectedMember = self.team.team[self.teamNum]
+                        try:                        
+                            self.selectedMember = self.iterator.next()
+                            break
+                        except StopIteration:
+                            self.iterator = self.team.team.itervalues()
+                            self.selectedMember = self.iterator.next()
                         self.itemBool = False
                         break
                   
@@ -711,7 +736,12 @@ class Battle:
                             pygame.time.delay(75)
                             self.flipScreenBuffer()
                         self.selectedMemNum = 13    
-                        self.selectedMember = self.team.team[self.teamNum]
+                        try:                        
+                            self.selectedMember = self.iterator.next()
+                            break
+                        except StopIteration:
+                            self.iterator = self.team.team.itervalues()
+                            self.selectedMember = self.iterator.next() 
                         self.attackBool = False
                         break
 
@@ -885,7 +915,12 @@ class Battle:
                             pygame.time.delay(75)
                             self.flipScreenBuffer()
                         self.selectedMemNum = 13    
-                        self.selectedMember = self.team.team[self.teamNum]    
+                        try:                        
+                            self.selectedMember = self.iterator.next()
+                            break
+                        except StopIteration:
+                            self.iterator = self.team.team.itervalues()
+                            self.selectedMember = self.iterator.next()    
                         self.WTCBool = False
                         break
                   
@@ -1058,7 +1093,12 @@ class Battle:
                             pygame.time.delay(75)
                             self.flipScreenBuffer()
                         self.selectedMemNum = 13    
-                        self.selectedMember = self.team.team[self.teamNum]    
+                        try:                        
+                            self.selectedMember = self.iterator.next()
+                            break
+                        except StopIteration:
+                            self.iterator = self.team.team.itervalues()
+                            self.selectedMember = self.iterator.next()    
                         self.HTCBool = False
                         break
                   
