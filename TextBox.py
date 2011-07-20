@@ -144,6 +144,23 @@ class TextBox:
             self.height = self.font.size(self.title)[1]        
         self.text = text
 
+class QuickBox:
+    def __init__(self, x, y, text):
+        self.box = TextBox(x, y, text)
+        self.open = True
+        while self.open:
+            self.box.draw()
+            pygame.display.flip()       
+            for e in pygame.event.get():
+                if e.type == QUIT:
+                    GlobalData.quitFlag = 1
+                    return
+                elif e.type == KEYDOWN:
+                    if e.key == K_RETURN:
+                        self.open = False
+
+
+
 class BattleMenu:
     def __init__(self, x, y, lines):
         self.font = pygame.font.Font(None, 24)

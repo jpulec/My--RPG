@@ -130,9 +130,9 @@ class Battle:
                                     if e.key == K_RETURN:
                                         self.open = False
                         #Won battle
-                        self.ret = []
+                        self.ret = dict()
                         for x in self.team.team.itervalues():
-                            self.ret.append(x.currentSkin)
+                            self.ret[x.name] = x.currentSkin                    
                         return self.ret
 
                     for x in self.team.team.values():
@@ -204,9 +204,9 @@ class Battle:
                             if e.key == K_RETURN:
                                 self.open = False
                 #Won battle
-                self.ret = []
+                self.ret = dict()
                 for x in self.team.team.itervalues():
-                    self.ret.append(x.currentSkin)
+                    self.ret[x.name] = x.currentSkin                    
                 return self.ret
 
             for x in self.team.team.values():
@@ -415,9 +415,9 @@ class Battle:
                         elif e.type == KEYDOWN:
                             if e.key == K_RETURN:
                                 self.open = False
-                self.ret = []
+                self.ret = dict()
                 for x in self.team.team.itervalues():
-                    self.ret.append(x.currentSkin)
+                    self.ret[x.name] = x.currentSkin                    
                 return self.ret
             else:
                 #couldnt run
@@ -428,14 +428,14 @@ class Battle:
     def item(self):
         self.itemBool = True
         self.itemList = []
-        for x in self.player.shit:
-            for y in x.types:
+        for x in self.team.shit:
+            for y in self.team.shit[x].types:
                 if y.strip() == "ITEM":
-                    self.itemList.append(x.name)
+                    self.itemList.append(x)
         if len(self.itemList) == 0:
-            self.textBox(GlobalData.display, GlobalData.textureManager, 192, 312, "No items!              ")
+            TextBox.QuickBox(92, 312, "No items!              ")
             return                      
-        self.itemMenu = TextBox.BattleMenu(GlobalData.display, GlobalData.textureManager, 192, 312, self.itemList)
+        self.itemMenu = TextBox.BattleMenu(192, 312, self.itemList)
         self.selectionitem = 0
         while self.itemBool:
             GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
@@ -748,14 +748,14 @@ class Battle:
     def WTC(self):
         self.WTCBool = True
         self.WTCList = []
-        for x in self.player.shit:
-            for y in x.types:
+        for x in self.team.shit:
+            for y in self.team.shit[x].types:
                 if y.strip() == "WTC":
-                    self.WTCList.append(x.name)
+                    self.WTCList.append(x)
         if len(self.WTCList) == 0:
-            self.textBox(GlobalData.display, GlobalData.textureManager, 192, 312, "No WTC!              ")
+            TextBox.QuickBox(192, 312, "No WTC!              ")
             return                      
-        self.WTCMenu = TextBox.BattleMenu(GlobalData.display, GlobalData.textureManager, 192, 312, self.WTCList)
+        self.WTCMenu = TextBox.BattleMenu(192, 312, self.WTCList)
         self.selectionWTC = 0
         while self.WTCBool:
             GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))
@@ -956,14 +956,14 @@ class Battle:
         self.HTCBool = True
         self.HTCList = []
         self.HTCAct = []
-        for x in self.player.shit:
-            for y in x.types:
+        for x in self.team.shit:
+            for y in self.team.shit[x].types:
                 if y.strip() == "HTC":
-                    self.HTCList.append(x.name)
+                    self.HTCList.append(x)
         if len(self.HTCList) == 0:
-            self.textBox(GlobalData.display, GlobalData.textureManager, 192, 312, "No HTC!              ")
+            TextBox.QuickBox(192, 312, "No HTC!              ")
             return                      
-        self.HTCMenu = TextBox.BattleMenu(GlobalData.display, GlobalData.textureManager, 192, 312, self.HTCList)
+        self.HTCMenu = TextBox.BattleMenu(192, 312, self.HTCList)
         self.selectionHTC = 0
         while self.HTCBool:
             GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["bg"][0], (0,0))

@@ -139,25 +139,25 @@ class GameLoop:
             elif event.key == K_RETURN:
                 #print len(self.map.allTiles[4][4].contents)
                 if self.player.facing is 4 and self.map.currentPiece.array[13][9].text != "":
-                    self.textBox( 48, 48, self.map.currentPiece.array[13][9].text)
+                    TextBox.QuickBox( 48, 48, self.map.currentPiece.array[13][9].text)
                     if len(self.map.currentPiece.array[13][9].contents) != 0:
                         self.map.drawMap()  
                         self.player.display()
                         self.gotItem( 48, 48, self.map.currentPiece.array[13][9])
                 elif self.player.facing is 8 and self.map.currentPiece.array[12][10].text != "":
-                    self.textBox( 48, 48, self.map.currentPiece.array[12][10].text)
+                    TextBox.QuickBox( 48, 48, self.map.currentPiece.array[12][10].text)
                     if len(self.map.currentPiece.array[12][10].contents) != 0:
                         self.map.drawMap()  
                         self.player.display()
                         self.gotItem( 48, 48, self.map.currentPiece.array[12][10])
                 elif self.player.facing is 12 and self.map.currentPiece.array[11][9].text != "":
-                    self.textBox( 48, 48, self.map.currentPiece.array[11][9].text)
+                    TextBox.QuickBox( 48, 48, self.map.currentPiece.array[11][9].text)
                     if len(self.map.currentPiece.array[11][9].contents) != 0:
                         self.map.drawMap()  
                         self.player.display()
                         self.gotItem( 48, 48, self.map.currentPiece.array[11][9])
                 elif self.player.facing is 0 and self.map.currentPiece.array[12][8].text != "":
-                    self.textBox( 48, 48, self.map.currentPiece.array[12][8].text)
+                    TextBox.QuickBox( 48, 48, self.map.currentPiece.array[12][8].text)
                     if len(self.map.currentPiece.array[12][8].contents) != 0:
                         self.map.drawMap()  
                         self.player.display()
@@ -175,7 +175,12 @@ class GameLoop:
 
     def battle(self):
         self.instance = Battle.Battle(self.map, self.team)
-        self.instance.battleMain()
+        self.newSkins = self.instance.battleMain()
+        if self.newSkins is not None:        
+            for x in self.newSkins:
+                self.team.team[x].currentSkin = self.newSkins[x]
+                if self.player.name is x:
+                    self.player.currentSkin = self.newSkins[x]
                         
     def portal(self):
         self.list = self.map.currentPiece.array[12][9].portal.split(';')
@@ -285,24 +290,11 @@ class GameLoop:
         
         self.map.drawMap()  
         self.player.display()
-
-    def textBox(self, x, y, text):
-        self.box = TextBox.TextBox(x, y, text)
-        self.open = True
-        while self.open:
-            self.box.draw()
-            pygame.display.flip()       
-            for e in pygame.event.get():
-                if e.type == QUIT:
-                    GlobalData.quitFlag = 1
-                    return
-                elif e.type == KEYDOWN:
-                    if e.key == K_RETURN:
-                        self.open = False            
+           
 
     def gotItem(self, x, y, mapTile):
         for z in mapTile.contents:
-            self.team.shit.append(z)
+            self.team.shit[z.name] = z
             self.box = TextBox.TextBox(x, y, "You receieved " + z.name + ".")
             mapTile.contents.remove(z)
             self.open = True
