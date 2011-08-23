@@ -21,11 +21,12 @@ class StartMenu:
         pygame.display.flip()    
 
     def menuMain(self):
-        self.menu = MenuBox(self.map, self.team)
+        self.menu = MenuBox(self.map, self.team, 360, 360)
         self.open = True
         self.selection = 0
         while(True):
             self.menu.show()
+            self.menu.showMenu()
             if self.selection == 0:
                 GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48), GlobalData.textureManager.spriteRects["battle"][1])
             elif self.selection == 1:
@@ -60,7 +61,7 @@ class StartMenu:
                         return
                     elif e.key == K_RETURN:
                         if self.selection == 0:
-                            self.menuItem()
+                            self.menuItems()
                             break
                         elif self.selection == 1:
                             self.menuEquipment()
@@ -82,6 +83,7 @@ class StartMenu:
                             break
                         elif self.selection == 7:
                             self.menu.show()
+                            self.menu.showMenu()
                             self.box = TextBox.TextBox(144, 144, "  Are you sure you want to quit?")
                             self.boxOpen = True
                             self.select = 1
@@ -116,15 +118,7 @@ class StartMenu:
                                                               
                 pygame.event.pump()
         
-        #while self.open:
-        #    self.menu.show()       
-        #    for e in pygame.event.get():
-        #        if e.type == QUIT:
-        #            self.quitFlag = 1
-        #            return
-        #        elif e.type == KEYDOWN:
-        #            if e.key == 105:
-        #                self.open = False
+
 
     def menuSave(self):
         #TODO
@@ -134,40 +128,38 @@ class StartMenu:
         #TODO
         pass    
 
-    def menuItem(self):
+    def menuItems(self):
         self.chosen = False
         self.selection = 0
-        while not self.chosen:
-            self.menu.show()
-            if self.selection == 0:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 1:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 2:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 3:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
-            self.flipScreenBuffer()
+        self.inventory = MenuBox(self.map,self.team,504,360)
+        while not self.chosen:   
+            self.inventory.show()
+            pygame.display.flip()
             for e in pygame.event.get():
                 if e.type == QUIT:
                     self.quitFlag = 1
                     return
                 elif e.type == KEYDOWN:
-                    #print len(self.WTCList)
                     if e.key == K_UP:
                         self.selection -=1
                         if self.selection < 0:
-                            self.selection = len(self.team.team) - 1       
+                            self.selection = len(self.team.itemList) - 1       
                     elif e.key == K_DOWN:
                         self.selection += 1
-                        if self.selection > len(self.team.team) - 1:
+                        if self.selection > len(self.team.itemList) - 1:
                             self.selection = 0                      
                     elif e.key == K_END:
                         return
                     elif e.key == K_RETURN:
-                        self.menuItemSelected(self.team.team[self.selection])
+                        self.itemInfo(self.team.itemList[self.selection])
                         self.chosen = True
                         break
+ 
+    def itemInfo(self, item):
+        pass
+        #TODO 
+                        
+        
 
     def menuEquipment(self):
         self.chosen = False
@@ -344,12 +336,8 @@ class StartMenu:
                         self.chosen = True
                         break
 
-    def menuItemSelected(self, player):
-        self.itemList = []
-        for x in player.shit:
-            for y in x.types:
-                if y.strip() == "ITEM":
-                    self.itemList.append(x.name)
+    #def menuItemSelected(self, player):
+        
 
     def menuHTCSelected(self, player):
         self.HTCList = []
@@ -387,55 +375,24 @@ class StartMenu:
 
 #######################################
 class MenuBox:    
-    def __init__(self, themap, team):
+    def __init__(self, themap, team, width, height):
         self.x = 48
         self.y = 48
         self.team = team
-        self.width = 456-96
-        self.height = 456-96     
+        self.width = width
+        self.height = height     
         self.lines = []
         self.map = themap
         self.lineNum = 0
         self.facing = 9
         self.font = pygame.font.Font(None, 24)
         self.timer = GlobalData.timer
-        
-    def draw(self):
-        final_lines = []
-        requested_lines = self.text
-        if self.font.size(requested_lines)> self.width - 24:
-            words = requested_lines.split(' ')
-            accumulated_line = ""
-            for word in words:
-                test_line = accumulated_line + word + " "
-                # Build the line while the words fit.    
-                if self.font.size(test_line)[0] < self.width - 24:
-                    accumulated_line = test_line 
-                else: 
-                    final_lines.append(accumulated_line) 
-                    accumulated_line = word + " "
-            final_lines.append(accumulated_line)
-            for x in final_lines:
-                if self.lineNum < 5:
-                    self.lines.append(x)
-                    self.lineNum += 1
-                else:
-                    for y in range(len(self.lines)-1):
-                        self.lines[y] = self.lines[y+1]
-                    self.lines[4] = x
-        else: 
-            if self.lineNum < 5:
-                self.lines.append(requested_lines)
-                self.lineNum += 1
-            else:
-                for x in range(len(self.lines)-1):
-                    self.lines[x] = self.lines[x+1]
-                self.lines[4] = requested_lines  
+         
 
     def show(self):
         GlobalData.display.getScreen().fill((0,0,0))
-        self.xCount = 15
-        self.yCount = 15
+        self.xCount = self.width/24
+        self.yCount = self.height/24
         for x in range(self.xCount):
             for y in range(self.yCount):
                 if x == 0:
@@ -458,13 +415,10 @@ class MenuBox:
                     elif y == self.yCount-1:
                         GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
                     else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])                  
-        self.yPlus = 0
-        for x in self.lines:            
-            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
-            self.yPlus += 24        
+                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])                         
 
-
+    def showMenu(self):
+        
         self.menuLines = ["Item", "Equipment", "HTC", "Status", "Settings", "Order", "Save", "Quit"]
         self.otherxCount = 6
         self.otheryCount = 11
@@ -498,8 +452,8 @@ class MenuBox:
 
         self.yPlus = 0
         for x in self.team.team:
-            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[self.team.team[x].currentSkin][0], (96,96), GlobalData.textureManager.spriteRects[self.team.team[x].currentSkin][self.facing])
-            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (144, 96 + self.yPlus))
+            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[x.currentSkin][0], (96,96), GlobalData.textureManager.spriteRects[x.currentSkin][self.facing])
+            GlobalData.display.getScreen().blit(self.font.render(x.name, 0, (255,255,255)), (144, 96 + self.yPlus))
             self.facing += 1
             if self.facing == 13:
                 self.facing  = 9

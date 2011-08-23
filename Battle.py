@@ -502,8 +502,6 @@ class Battle:
             self.display.getScreen().blit(self.textureManager.textures[self.selectedMember.currentSkin][0], (504 - 4*6,96), self.textureManager.spriteRects[self.selectedMember.currentSkin][13])    
             self.battleMenu.show()
             self.battleBox.show()
-            if action is "WTC":
-                self.WTCMenu.show()
             if self.selectedMonster == (0,0):
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (128, 96), self.textureManager.spriteRects["battle"][1])                 
             elif self.selectedMonster == (0,1):
@@ -524,7 +522,7 @@ class Battle:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (316, 196 + 48), self.textureManager.spriteRects["battle"][1])                 
             self.flipScreenBuffer()                  
             for e in pygame.event.get():
-                self.noChange = False        
+                #self.noChange = False        #this appears useless...
                 if e.type == QUIT:
                     GlobalData.quitFlag = 1
                     return    
@@ -610,13 +608,13 @@ class Battle:
                         break
 
                     elif e.key == K_RETURN:    
-                        if self.noChange == True:
-                            continue
+                        #if self.noChange == True:  #this appears useless...
+                        #    continue
                         if item is None:
                             tmp = [self.selectedMember, action, self.monArray[self.selectedMonster[0]][self.selectedMonster[1]]]    #for attack only
                         else:
                             tmp = [self.selectedMember, action, item, self.monArray[self.selectedMonster[0]][self.selectedMonster[1]]]
-                            self.WTCBool = False    
+                            self.bool = False    
                         
                         self.actions.append(tmp)
                         self.teamNum += 1
@@ -624,6 +622,7 @@ class Battle:
                             self.enemyActions()                                
                             self.teamNum = 0
                             self.executeMoves = True
+                            
                             
                         for x in range(4):    
                             self.display.getScreen().blit(self.textureManager.textures["bg"][0], (0,0))
