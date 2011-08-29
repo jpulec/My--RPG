@@ -1,1 +1,1 @@
-Attributes.pyc Battle.pyc CharacterData.pyc Creature.pyc DisplayInfo.pyc GameObject.pyc Game.pyc GlobalData.pyc ImageData.pyc Item.pyc ItemWrapper.pyc MapDisplayInfo.pyc Map.pyc Menu.pyc PlayerData.pyc Position.pyc StartMenu.pyc TeamData.pyc TextBox.pyc
+*.pyc
