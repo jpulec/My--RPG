@@ -7,6 +7,7 @@ import string
 import pygame.time
 import GlobalData
 import Item
+import ItemWrapper
 
 
 def loadTileSet(mapName, xNum, yNum, alpha = None):
@@ -227,10 +228,13 @@ class Map:
                 if self.tmpList[5] != "":
                     self.workingMap[x][y].tileSetName = self.tmpList[5]
                     self.workingMap[x][y].tileSet = GlobalData.textureManager.textures[self.tmpList[5]][0]
-                self.splitList = self.tmpList[6].split(';')
-                for z in self.splitList:
-                    if self.splitList[0] != "":
-                        self.workingMap[x][y].contents.append(Item.Item(z))                                   
+                if self.tmpList[6] != '': 
+                    self.splitList = self.tmpList[6].split(';')
+                    #print self.splitList
+                    for z in self.splitList:
+                        self.workingMap[x][y].contents.append(ItemWrapper.ItemWrapper(z, 1))
+                    
+                    #print self.workingMap[x][y].contents                                              
                 self.workingMap[x][y].portal = self.tmpList[7]
                 if self.tmpList[8][:-1] == "None":
                     self.workingMap[x][y].backRect = None

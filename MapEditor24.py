@@ -210,6 +210,7 @@ class MapLoop:
         self.textureManager = ImageData.ImageData()
         self.workingMap = [[MapTile(self.textureManager, self.display) for i in range(30)] for j in range(30)]
         self.tileArray = [[MapTile(self.textureManager, self.display) for i in range(30)] for j in range(30)]
+        self.textureManager.loadTexture("collision","images/mapeditor/collision.png")
         self.selectedTile = None
         self.currentTileSet = None
         self.font = pygame.font.Font(None, 24)
@@ -225,7 +226,8 @@ class MapLoop:
         if self.selectedTile == None:
             self.display.getScreen().blit(self.font.render("Current tile: None", 0, (255,255,255)), (48, 750))
         else:
-             self.display.getScreen().blit(self.font.render("Current tile: " + str(self.selectedTile.getName()), 0, (255,255,255)), (48, 750))    
+            self.display.getScreen().blit(self.font.render("Current tile: " + str(self.selectedTile.getName()), 0, (255,255,255)), (48, 750))
+        self.display.getScreen().blit(self.textureManager.textures["collision"][0], (480, 744))        
     
     def initDisplay(self):
         self.display.createScreen()
@@ -1070,9 +1072,6 @@ class MapLoop:
 
 if __name__=="__main__":
     map = MapLoop()
-    #print "Default Font: %s"%(pygame.font.get_default_font())
-    #print "All fonts:\n-------------"
-    #print pygame.font.get_fonts()
     map.mainloop()
 
 

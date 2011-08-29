@@ -1,6 +1,7 @@
 import string
 import ImageData
 import DisplayInfo
+import pygame.time
 
     #self.maps = self.getMaps()
 
@@ -9,7 +10,7 @@ def getMapData():
     fileToLoad = open(file1, 'r')
     mapData = dict()
     for lines in fileToLoad:
-        tmpList = string.split(lines, ';')
+        tmpList = [x.strip() for x in lines.split(';')]
         if tmpList[0][0] == "#":
             continue
         mapData[tmpList[0]] = tmpList[1:]
@@ -25,7 +26,7 @@ def getStats():
     fileToLoad = open(file1, 'r')
     statData = dict()
     for lines in fileToLoad:
-        tmpList = string.split(lines, ';')
+        tmpList = [x.strip() for x in lines.split(';')]
         if tmpList[0][0] == "#":
             continue
         statData[tmpList[0]] = tmpList[1:]
@@ -38,7 +39,7 @@ def getItemData():
     fileToLoad = open(file1, 'r')
     itemData = dict()
     for lines in fileToLoad:
-        tmpList = string.split(lines, ';')
+        tmpList = [x.strip() for x in lines.split(';')]
         if tmpList[0][0] == "#":
             continue
         itemData[tmpList[0]] = tmpList[1:]
@@ -53,6 +54,7 @@ itemData = getItemData()
 quitFlag = 0
 textureManager = ImageData.ImageData()
 displayInitialized = 0
-display = DisplayInfo.DisplayInfo() 
-
+display = DisplayInfo.DisplayInfo()
+timer =  pygame.time.Clock()
+debugMode = False
        

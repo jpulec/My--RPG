@@ -1,1 +1,23 @@
-Run Game.py to play
+Run Game.py to play, this requires pygame to work
+
+----------CONTROLS----------
+
+Use Enter to make selections and look at things on the map
+Use End to cancel selections or quit out of a battle
+
+Use the arrow keys to navigate menus and to move
+
+Use 'i' to open the inventory (it needs a lot of work)
+
+Use Alt+Enter to enter and leave fullscreen
+
+Press '`' (tilde) to enter debug mode
+
+----------DEBUG MODE----------------
+
++,- to increase and decrease monster frequency
+
+(smaller number means better chance of running into monsters)
+
+F1 toggles Monsters on and off based on location
+

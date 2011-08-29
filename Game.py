@@ -5,7 +5,7 @@ import pygame.time
 import ImageData
 pygame.init()
 import DisplayInfo
-import CharacterData
+#import CharacterData
 import Map
 import TextBox
 import Creature
@@ -21,15 +21,18 @@ import PlayerData
 
 class GameLoop:
     def __init__(self):
-        self.timer = pygame.time.Clock()
-        self.player = PlayerData.PlayerData("Rena")
+        self.timer = GlobalData.timer
         self.team = TeamData.TeamData()
         self.maps = dict()
+        self.display = GlobalData.display
+        self.textureManager = GlobalData.textureManager
+        pygame.font.init()
+        self.font = pygame.font.Font(None, 24)
         
     
 
     def initDisplay(self):
-        GlobalData.display.createScreen()
+        self.display.createScreen()
         GlobalData.displayInitilized = 1
         
     
@@ -47,8 +50,8 @@ class GameLoop:
         Map.loadTileSet("Interior_Cave1.png", 30, 16)
         self.map = Map.Map("Exterior_Town1", "Exterior_Town1-6", 30, 30)
         self.maps["Exterior_Town1"] = [self.map] 
-        timer = pygame.time.get_ticks()
-        timeOffset = 0.00
+        #timer = pygame.time.get_ticks()
+        #timeOffset = 0.00
  
 
         while not GlobalData.quitFlag:
@@ -66,14 +69,14 @@ class GameLoop:
 
  
     def printFPS(self):
-        pygame.font.init()
-        self.font = pygame.font.Font(None, 24)
-        GlobalData.display.getScreen().blit(self.font.render(str(self.timer.get_fps()), 0, (255,255,255)), (24,24))
-        GlobalData.display.getScreen().blit(self.font.render("X:" + str(self.map.getXoff()/24), 0, (255,255,255)), (24,48))
-        GlobalData.display.getScreen().blit(self.font.render("Y:" + str(self.map.getYoff()/24), 0, (255,255,255)), (24,72))
-        GlobalData.display.getScreen().blit(self.font.render("PrevX:" + str(self.map.prevXoff/24 - 1), 0, (255,255,255)), (24,96))
-        GlobalData.display.getScreen().blit(self.font.render("PrevY:" + str(self.map.prevYoff/24 - 1), 0, (255,255,255)), (24,120))
-        GlobalData.display.getScreen().blit(self.font.render("Monsters:" + str(self.map.hasMonsters), 0, (255,255,255)), (24,144))
+        if GlobalData.debugMode:
+            self.display.getScreen().blit(self.font.render(str(self.timer.get_fps()), 0, (255,255,255)), (24,24))
+            self.display.getScreen().blit(self.font.render("X:" + str(self.map.getXoff()/24), 0, (255,255,255)), (24,48))
+            self.display.getScreen().blit(self.font.render("Y:" + str(self.map.getYoff()/24), 0, (255,255,255)), (24,72))
+            self.display.getScreen().blit(self.font.render("PrevX:" + str(self.map.prevXoff/24 - 1), 0, (255,255,255)), (24,96))
+            self.display.getScreen().blit(self.font.render("PrevY:" + str(self.map.prevYoff/24 - 1), 0, (255,255,255)), (24,120))
+            self.display.getScreen().blit(self.font.render("Monsters:" + str(self.map.hasMonsters), 0, (255,255,255)), (24,144))
+            self.display.getScreen().blit(self.font.render("Freq:" + str(self.map.freq), 0, (255,255,255)), (24,168))
         
     def flipScreenBuffer(self):
         pygame.display.flip()
@@ -130,45 +133,69 @@ class GameLoop:
                 self.map.setXYoff(self.map.getXoff(), self.map.getYoff() - 6)
             self.mods =  pygame.key.get_mods()       
             if event.key == K_RETURN and (self.mods == 4160 or self.mods == 20480 or self.mods == 256 or self.mods == 512):
-                if GlobalData.display.isFullscreen == 0:   
-                    GlobalData.display.isFullscreen = 1
-                    GlobalData.display.createScreen()
+                if self.display.isFullscreen == 0:   
+                    self.display.isFullscreen = 1
+                    self.display.createScreen()
                 else:
-                    GlobalData.display.isFullscreen = 0
-                    GlobalData.display.createScreen()
+                    self.display.isFullscreen = 0
+                    self.display.createScreen()
             elif event.key == K_RETURN:
                 #print len(self.map.allTiles[4][4].contents)
                 if self.player.facing is 4 and self.map.currentPiece.array[13][9].text != "":
                     TextBox.QuickBox( 48, 48, self.map.currentPiece.array[13][9].text)
                     if len(self.map.currentPiece.array[13][9].contents) != 0:
+                        #print self.map.currentPiece.array[13][9].contents
                         self.map.drawMap()  
-                        self.player.display()
+                        self.player.displayOnMap()
                         self.gotItem( 48, 48, self.map.currentPiece.array[13][9])
                 elif self.player.facing is 8 and self.map.currentPiece.array[12][10].text != "":
                     TextBox.QuickBox( 48, 48, self.map.currentPiece.array[12][10].text)
                     if len(self.map.currentPiece.array[12][10].contents) != 0:
+                        #print self.map.currentPiece.array[12][10].contents
                         self.map.drawMap()  
-                        self.player.display()
+                        self.player.displayOnMap()
                         self.gotItem( 48, 48, self.map.currentPiece.array[12][10])
                 elif self.player.facing is 12 and self.map.currentPiece.array[11][9].text != "":
                     TextBox.QuickBox( 48, 48, self.map.currentPiece.array[11][9].text)
                     if len(self.map.currentPiece.array[11][9].contents) != 0:
+                        #print self.map.currentPiece.array[11][9].contents
                         self.map.drawMap()  
-                        self.player.display()
+                        self.player.displayOnMap()
                         self.gotItem( 48, 48, self.map.currentPiece.array[11][9])
                 elif self.player.facing is 0 and self.map.currentPiece.array[12][8].text != "":
                     TextBox.QuickBox( 48, 48, self.map.currentPiece.array[12][8].text)
                     if len(self.map.currentPiece.array[12][8].contents) != 0:
+                        #print self.map.currentPiece.array[12][8].contents
                         self.map.drawMap()  
-                        self.player.display()
+                        self.player.displayOnMap()
                         self.gotItem( 48, 48, self.map.currentPiece.array[12][8])
             elif event.key == 105:
                 self.startMenu()
-                                           
+          
+            elif event.key == 282:
+                if GlobalData.debugMode:
+                    if self.map.hasMonsters is True:
+                        self.map.hasMonsters = False
+                    elif GlobalData.mapsData[self.map.name][2] == True:
+                        self.map.hasMonsters = True
+             
+            elif event.key == 96:
+                if GlobalData.debugMode:
+                    GlobalData.debugMode = False  
+                else:
+                    GlobalData.debugMode = True
+            elif event.key == 45:
+                if GlobalData.debugMode:
+                    if self.map.freq > 1:
+                        self.map.freq -= 1
+            elif event.key == 61:
+                if GlobalData.debugMode:
+                    self.map.freq += 1
+                   
             if event.key > 272 and event.key < 277:
                 self.map.drawMap()
                 self.player.setFacing(self.player.facing + 1)
-                self.player.display()
+                self.player.displayOnMap()
                 self.printFPS()                
                 self.flipScreenBuffer()
                 pygame.time.delay(50)         
@@ -177,10 +204,9 @@ class GameLoop:
         self.instance = Battle.Battle(self.map, self.team)
         self.newSkins = self.instance.battleMain()
         if self.newSkins is not None:        
-            for x in self.newSkins:
+            for x in range(len(self.newSkins)):
                 self.team.team[x].currentSkin = self.newSkins[x]
-                if self.player.name is x:
-                    self.player.currentSkin = self.newSkins[x]
+
                         
     def portal(self):
         self.list = self.map.currentPiece.array[12][9].portal.split(';')
@@ -196,7 +222,7 @@ class GameLoop:
             self.map.startPieceOffsetX = self.xPiece
             self.map.startPieceOffsetY = self.yPiece 
             self.map.startPieceName = self.startPiece       
-        #GlobalData.display.getScreen().fill((0,0,0))
+        #self.display.getScreen().fill((0,0,0))
         for x in range(-1,26):
             for y in range(-1,20):
                 self.map.currentPiece.array[x][y] = self.map.allTiles[-self.map.Xoff/24 + x + self.map.startPieceOffsetX][-self.map.Yoff/24 + y + self.map.startPieceOffsetY]        
@@ -204,14 +230,17 @@ class GameLoop:
                 
     def initPlayer(self):
         PlayerData.loadPlayerGraphics("rena", "nightgown")
-        self.player.currentSkin = "rena_nightgown"
-        self.team.add("Rena", CharacterData.CharacterData("Rena"))
-        self.team.team["Rena"].currentSkin = "rena_nightgown"
+        PlayerData.loadPlayerGraphics("miles", "coat")
+        self.team.add(PlayerData.PlayerData("Rena"))
+        self.team.team[0].currentSkin = "rena_nightgown"
+        self.team.add(PlayerData.PlayerData("Miles"))
+        self.team.team[1].currentSkin = "miles_coat"
+        self.player = self.team.team[0]
         self.player.setPosition(288, 192)
-        self.player.display()
+        self.player.displayOnMap()
         
     def drawWorld(self):
-        
+        self.player.currentSkin = self.team.team[0].currentSkin
         #print self.map.objectManager.collisionRects
         if (self.map.getXoff() % 24) is not 0:
             if self.player.facing > 3 and self.player.facing < 7:
@@ -226,7 +255,7 @@ class GameLoop:
                 if self.map.currentPiece.array[12][9].portal != "":
                     self.portal()
                 if self.map.hasMonsters == True:
-                    random.seed()
+                    
                     self.chance = random.randint(0,self.map.freq)
                     #print self.chance
                     if self.chance == 0:
@@ -244,7 +273,7 @@ class GameLoop:
                 if self.map.currentPiece.array[12][9].portal != "":
                     self.portal()
                 if self.map.hasMonsters == True:
-                    random.seed()
+                    
                     self.chance = random.randint(0,self.map.freq)
                     #print self.chance
                     if self.chance == 0:
@@ -263,7 +292,7 @@ class GameLoop:
                 if self.map.currentPiece.array[12][9].portal != "":
                     self.portal()
                 if self.map.hasMonsters == True:
-                    random.seed()
+                    
                     self.chance = random.randint(0,self.map.freq)
                     #print self.chance
                     if self.chance == 0:
@@ -281,7 +310,7 @@ class GameLoop:
                 if self.map.currentPiece.array[12][9].portal != "":
                     self.portal()
                 if self.map.hasMonsters == True:
-                    random.seed()
+                    
                     self.chance = random.randint(0,self.map.freq)
                     #print self.chance
                     if self.chance == 0:
@@ -289,16 +318,17 @@ class GameLoop:
                     
         
         self.map.drawMap()  
-        self.player.display()
+        self.player.displayOnMap()
            
 
     def gotItem(self, x, y, mapTile):
         for z in mapTile.contents:
-            self.team.shit[z.name] = z
+            self.team.addShit(z)
             self.box = TextBox.TextBox(x, y, "You receieved " + z.name + ".")
-            mapTile.contents.remove(z)
             self.open = True
             while self.open:
+                self.map.drawMap()
+                self.player.displayOnMap()
                 self.box.draw()
                 pygame.display.flip()       
                 for e in pygame.event.get():
@@ -308,6 +338,8 @@ class GameLoop:
                     elif e.type == KEYDOWN:
                         if e.key == K_RETURN:
                             self.open = False
+        mapTile.contents = []                    
+                   
 
 
     def startMenu(self):

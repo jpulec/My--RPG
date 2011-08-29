@@ -1,5 +1,3 @@
-
-
 import pygame,sys
 
 class ImageData:
