@@ -56,5 +56,8 @@ textureManager = ImageData.ImageData()
 displayInitialized = 0
 display = DisplayInfo.DisplayInfo()
 timer =  pygame.time.Clock()
+<<<<<<< HEAD
 debugMode = False
+=======
+>>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
        

@@ -1,6 +1,8 @@
+
 import Creature
 import pygame
 import GlobalData
+
 
 def loadPlayerGraphics(name, skin):
     GlobalData.textureManager.loadTexture(name+"_"+skin,"images/characters/" + name + "/" + skin + "/" + name + "_" + skin + ".png", -1)
@@ -24,6 +26,7 @@ def loadPlayerGraphics(name, skin):
         for x in range(0,4):
             GlobalData.textureManager.spriteRects[name+"_"+skin+"-80"].append(pygame.rect.Rect(x*24,y*48,24,48))                         
 
+
 class PlayerData(Creature.Creature):
     def __init__(self, name):
         Creature.Creature.__init__(self, name)        
@@ -34,7 +37,7 @@ class PlayerData(Creature.Creature):
         self.rHand = None
         self.lHand = None
         self.armor = None
-        self.alive = True
+
 
     
     def setFacing(self, facing):
