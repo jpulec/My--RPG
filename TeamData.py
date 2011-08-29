@@ -20,15 +20,9 @@ class TeamData:
         else:
             self.shit[shit.name] = shit
             for x in shit.types:
-<<<<<<< HEAD
                 #print x
                 if x.strip() == "WTC":
                     #print "WTC"
-=======
-                print x
-                if x.strip() == "WTC":
-                    print "WTC"
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
                     self.WTCList.append(shit.name)
                 if x.strip() == "HTC":
                     self.HTCList.append(shit.name)

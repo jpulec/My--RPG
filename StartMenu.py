@@ -16,11 +16,8 @@ class StartMenu:
         self.map = currMap
         self.team = team
         self.font = pygame.font.Font(None, 24)
-<<<<<<< HEAD
         self.display = GlobalData.display
         self.textureManager = GlobalData.textureManager
-=======
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
 
     def flipScreenBuffer(self):
         pygame.display.flip()    
@@ -29,7 +26,6 @@ class StartMenu:
         self.menu = MenuBox(self.map, self.team, 360, 360)
         self.open = True
         self.selection = 0
-<<<<<<< HEAD
         self.display.getScreen().fill((0,0,0))
         while(True):
             
@@ -51,27 +47,6 @@ class StartMenu:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+192), self.textureManager.spriteRects["battle"][1])
             elif self.selection == 7:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (514, 48+224), self.textureManager.spriteRects["battle"][1])        
-=======
-        while(True):
-            self.menu.show()
-            self.menu.showMenu()
-            if self.selection == 0:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 1:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+32), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 2:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+64), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 3:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+96), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 4:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+128), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 5:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+160), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 6:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+192), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 7:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (514, 48+224), GlobalData.textureManager.spriteRects["battle"][1])        
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -93,7 +68,6 @@ class StartMenu:
                             self.menuItems()
                             break
                         elif self.selection == 1:
-<<<<<<< HEAD
                             self.menuSelectChar("EQUIP")
                             break 
                         elif self.selection == 2:
@@ -101,25 +75,12 @@ class StartMenu:
                             break
                         elif self.selection == 3:
                             self.menuSelectChar("STATUS")
-=======
-                            self.menuEquipment()
-                            break 
-                        elif self.selection == 2:
-                            self.menuHTC()
-                            break
-                        elif self.selection == 3:
-                            self.menuStatus()
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
                             break
                         elif self.selection == 4:
                             self.menuSettings()
                             break
                         elif self.selection == 5:
-<<<<<<< HEAD
                             self.menuSelectChar("ORDER")
-=======
-                            self.menuOrder()
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
                             break
                         elif self.selection == 6:
                             self.menuSave()
@@ -133,19 +94,11 @@ class StartMenu:
                             
                             while self.boxOpen:
                                 self.box.draw()
-<<<<<<< HEAD
                                 self.display.getScreen().blit(self.font.render("            Yes            No", 0, (255,255,255)), (168, 168))
                                 if self.select == 0:
                                     self.display.getScreen().blit(self.textureManager.textures["battle"][0], (264, 168), self.textureManager.spriteRects["battle"][1])
                                 elif self.select == 1:
                                     self.display.getScreen().blit(self.textureManager.textures["battle"][0], (336, 168), self.textureManager.spriteRects["battle"][1])
-=======
-                                GlobalData.display.getScreen().blit(self.font.render("            Yes            No", 0, (255,255,255)), (168, 168))
-                                if self.select == 0:
-                                    GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (264, 168), GlobalData.textureManager.spriteRects["battle"][1])
-                                elif self.select == 1:
-                                    GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (336, 168), GlobalData.textureManager.spriteRects["battle"][1])
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
                                 pygame.display.flip()       
                                 for e in pygame.event.get():
                                     if e.type == QUIT:
@@ -202,14 +155,10 @@ class StartMenu:
                     elif e.key == K_END:
                         return
                     elif e.key == K_RETURN:
-<<<<<<< HEAD
                         if len(self.team.itemList) == 0:
                             return
                         else:                            
                             self.itemInfo(self.team.itemList[self.selection])
-=======
-                        self.itemInfo(self.team.itemList[self.selection])
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
                         self.chosen = True
                         break
  
@@ -218,17 +167,11 @@ class StartMenu:
         #TODO 
                         
         
-<<<<<<< HEAD
     def menuSelectChar(self, selectType):
-=======
-
-    def menuEquipment(self):
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
         self.chosen = False
         self.selection = 0
         while not self.chosen:
             self.menu.show()
-<<<<<<< HEAD
             self.menu.showMenu()
             if self.selection == 0:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (200, 72), self.textureManager.spriteRects["battle"][1])
@@ -238,16 +181,6 @@ class StartMenu:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (200, 72+192), self.textureManager.spriteRects["battle"][1])
             elif self.selection == 3:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (200, 72+288), self.textureManager.spriteRects["battle"][1])    
-=======
-            if self.selection == 0:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 1:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 2:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 3:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -266,7 +199,6 @@ class StartMenu:
                     elif e.key == K_END:
                         return
                     elif e.key == K_RETURN:
-<<<<<<< HEAD
                         if selectType == "ORDER":
                             self.menuOrder(self.team.team[self.selection])
                         elif selectType == "STATUS":
@@ -324,25 +256,6 @@ class StartMenu:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (200, 72+192), self.textureManager.spriteRects["battle"][1])
             elif self.selection2 == 3:
                 self.display.getScreen().blit(self.textureManager.textures["battle"][0], (200, 72+288), self.textureManager.spriteRects["battle"][1])    
-=======
-                        self.menuEquipSelected(self.team.team[self.selection])
-                        self.chosen = True
-                        break
-
-    def menuHTC(self):
-        self.chosen = False
-        self.selection = 0
-        while not self.chosen:
-            self.menu.show()
-            if self.selection == 0:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 1:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 2:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 3:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
@@ -351,7 +264,6 @@ class StartMenu:
                 elif e.type == KEYDOWN:
                     #print len(self.WTCList)
                     if e.key == K_UP:
-<<<<<<< HEAD
                         self.selection2 -=1
                         if self.selection2 < 0:
                             self.selection2 = len(self.team.team) - 1       
@@ -386,37 +298,6 @@ class StartMenu:
             self.display.getScreen().blit(self.textureManager.textures["battle"][0], (528, 54 + self.selection2*36), self.textureManager.spriteRects["battle"][1])
 
             self.flipScreenBuffer()
-            
-=======
-                        self.selection -=1
-                        if self.selection < 0:
-                            self.selection = len(self.team.team) - 1       
-                    elif e.key == K_DOWN:
-                        self.selection += 1
-                        if self.selection > len(self.team.team) - 1:
-                            self.selection = 0                      
-                    elif e.key == K_END:
-                        return
-                    elif e.key == K_RETURN:
-                        self.menuHTCSelected(self.team.team[self.selection])
-                        self.chosen = True
-                        break
-                        
-    def menuStatus(self):
-        self.chosen = False
-        self.selection = 0
-        while not self.chosen:
-            self.menu.show()
-            if self.selection == 0:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 1:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 2:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 3:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
-            self.flipScreenBuffer()
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             for e in pygame.event.get():
                 if e.type == QUIT:
                     self.quitFlag = 1
@@ -424,7 +305,6 @@ class StartMenu:
                 elif e.type == KEYDOWN:
                     #print len(self.WTCList)
                     if e.key == K_UP:
-<<<<<<< HEAD
                         self.selection2 -=1
                         if self.selection2 < 0:
                             self.selection2 = 2       
@@ -482,42 +362,12 @@ class StartMenu:
                     self.display.getScreen().blit(self.font.render(y, 0, (255,255,255)), (60 + self.whichCol*240, 150 + self.whichRow*24))
                     self.whichCol += 1
                 self.whichRow += 1
-=======
-                        self.selection -=1
-                        if self.selection < 0:
-                            self.selection = len(self.team.team) - 1       
-                    elif e.key == K_DOWN:
-                        self.selection += 1
-                        if self.selection > len(self.team.team) - 1:
-                            self.selection = 0                      
-                    elif e.key == K_END:
-                        return
-                    elif e.key == K_RETURN:
-                        self.menuStatusSelected(self.team.team[self.selection])
-                        self.chosen = True
-                        break
-
-    def menuOrder(self):
-        self.chosen = False
-        self.selection = 0
-        while not self.chosen:
-            self.menu.show()
-            if self.selection == 0:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 1:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 2:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 3:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             self.flipScreenBuffer()
             for e in pygame.event.get():
                 if e.type == QUIT:
                     self.quitFlag = 1
                     return
                 elif e.type == KEYDOWN:
-<<<<<<< HEAD
                     if e.key == K_UP:
                         self.selection3 = (self.selection3[0], self.selection3[1] - 1)
                         if self.selection3[1] < 0:
@@ -629,38 +479,6 @@ class StartMenu:
             for x in final_lines:            
                 self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (self.x + 6, self.y + self.yPlus + 4))
                 self.yPlus += 24
-=======
-                    #print len(self.WTCList)
-                    if e.key == K_UP:
-                        self.selection -=1
-                        if self.selection < 0:
-                            self.selection = len(self.team.team) - 1       
-                    elif e.key == K_DOWN:
-                        self.selection += 1
-                        if self.selection > len(self.team.team) - 1:
-                            self.selection = 0                      
-                    elif e.key == K_END:
-                        return
-                    elif e.key == K_RETURN:
-                        self.menuOrderSelected(self.team.team[self.selection])
-                        self.chosen = True
-                        break                     
-
-    def menuWTC(self):
-        self.chosen = False
-        self.selection = 0
-        while not self.chosen:
-            self.menu.show()
-            if self.selection == 0:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 1:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+32), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 2:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+64), GlobalData.textureManager.spriteRects["battle"][1])
-            elif self.selection == 3:
-                GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["battle"][0], (216, 96+96), GlobalData.textureManager.spriteRects["battle"][1])    
-            self.flipScreenBuffer()
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             for e in pygame.event.get():
                 if e.type == QUIT:
                     self.quitFlag = 1
@@ -668,7 +486,6 @@ class StartMenu:
                 elif e.type == KEYDOWN:
                     #print len(self.WTCList)
                     if e.key == K_UP:
-<<<<<<< HEAD
                         self.selection2 -=1
                         if self.selection2 < 0:
                             self.selection2 = len(self.team.HTCList) - 1       
@@ -680,44 +497,7 @@ class StartMenu:
                         return
                     elif e.key == K_RETURN:
                         self.selected = True
-                        break 
-=======
-                        self.selection -=1
-                        if self.selection < 0:
-                            self.selection = len(self.team.team) - 1       
-                    elif e.key == K_DOWN:
-                        self.selection += 1
-                        if self.selection > len(self.team.team) - 1:
-                            self.selection = 0                      
-                    elif e.key == K_END:
-                        return
-                    elif e.key == K_RETURN:
-                        self.menuWTCSelected(self.team.team[self.selection])
-                        self.chosen = True
                         break
-
-    #def menuItemSelected(self, player):
-        
-
-    def menuHTCSelected(self, player):
-        self.HTCList = []
-        for x in player.shit:
-            for y in x.types:
-                if y.strip() == "HTC":
-                    self.HTCList.append(x.name)
-
-    def menuEquipSelected(self, player):
-        self.equipWpnList = []
-        self.equipArmList = []
-        for x in player.shit:
-            for y in x.types:
-                if y.strip() == "WPN":
-                    self.equipWpnList.append(x.name)
-        for x in player.shit:
-            for y in x.types:
-                if y.strip() == "ARM":
-                    self.equipArmList.append(x.name)
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
 
     def menuOrderSelected(self, player):
         self.first = player
@@ -736,15 +516,9 @@ class StartMenu:
 
 #######################################
 class MenuBox:    
-<<<<<<< HEAD
     def __init__(self, themap, team, width, height, x = 48, y = 48):
         self.x = x
         self.y = y
-=======
-    def __init__(self, themap, team, width, height):
-        self.x = 48
-        self.y = 48
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
         self.team = team
         self.width = width
         self.height = height     
@@ -754,25 +528,17 @@ class MenuBox:
         self.facing = 9
         self.font = pygame.font.Font(None, 24)
         self.timer = GlobalData.timer
-<<<<<<< HEAD
         self.display = GlobalData.display
         self.textureManager = GlobalData.textureManager
          
 
     def show(self):
-=======
-         
-
-    def show(self):
-        GlobalData.display.getScreen().fill((0,0,0))
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
         self.xCount = self.width/24
         self.yCount = self.height/24
         for x in range(self.xCount):
             for y in range(self.yCount):
                 if x == 0:
                     if y == 0:
-<<<<<<< HEAD
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), self.textureManager.spriteRects["text"][1])              
                     elif y == self.yCount-1:
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), self.textureManager.spriteRects["text"][7])
@@ -792,27 +558,6 @@ class MenuBox:
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), self.textureManager.spriteRects["text"][8])
                     else:
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), self.textureManager.spriteRects["text"][5])                         
-=======
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
-                    elif y == self.yCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
-                elif x == self.xCount - 1 :
-                    if y == 0:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
-                    elif y == self.yCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
-                else:
-                    if y == 0:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
-                    elif y == self.yCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (self.x + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])                         
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
 
     def showMenu(self):
         
@@ -823,7 +568,6 @@ class MenuBox:
             for y in range(self.otheryCount):
                 if x == 0:
                     if y == 0:
-<<<<<<< HEAD
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), self.textureManager.spriteRects["text"][1])              
                     elif y == self.otheryCount-1:
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), self.textureManager.spriteRects["text"][7])
@@ -846,35 +590,10 @@ class MenuBox:
         self.yPlus = 0
         for x in self.menuLines:            
             self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, self.y + self.yPlus + 4))
-=======
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][1])              
-                    elif y == self.otheryCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][7])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][4])
-                elif x == self.otherxCount - 1:
-                    if y == 0:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][3])              
-                    elif y == self.otheryCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][9])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][6])
-                else:
-                    if y == 0:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][2])              
-                    elif y == self.otheryCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][8])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, self.y + y*24), GlobalData.textureManager.spriteRects["text"][5])                  
-        self.yPlus = 0
-        for x in self.menuLines:            
-            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, self.y + self.yPlus + 4))
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             self.yPlus += 32        
 
         self.yPlus = 0
         for x in self.team.team:
-<<<<<<< HEAD
             self.display.getScreen().blit(self.textureManager.textures[x.currentSkin][0], (72,72 + self.yPlus), self.textureManager.spriteRects[x.currentSkin][self.facing])
             self.display.getScreen().blit(self.font.render(x.name, 0, (255,255,255)), (120, 72 + self.yPlus))
             self.yPlus += 96
@@ -883,13 +602,6 @@ class MenuBox:
         self.facing += 1
         if self.facing == 13:
             self.facing  = 9            
-=======
-            GlobalData.display.getScreen().blit(GlobalData.textureManager.textures[x.currentSkin][0], (96,96), GlobalData.textureManager.spriteRects[x.currentSkin][self.facing])
-            GlobalData.display.getScreen().blit(self.font.render(x.name, 0, (255,255,255)), (144, 96 + self.yPlus))
-            self.facing += 1
-            if self.facing == 13:
-                self.facing  = 9
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
 
 
         final_lines = []
@@ -908,18 +620,13 @@ class MenuBox:
             final_lines.append(accumulated_line)
         else: 
             final_lines = requested_lines
-<<<<<<< HEAD
         self.displayLines = final_lines
-=======
-        GlobalData.displayLines = final_lines
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
         self.otherxCount = 6
         self.otheryCount = 4
         for x in range(self.otherxCount):
             for y in range(self.otheryCount):
                 if x == 0:
                     if y == 0:
-<<<<<<< HEAD
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), self.textureManager.spriteRects["text"][1])              
                     elif y == self.otheryCount-1:
                         self.display.getScreen().blit(self.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), self.textureManager.spriteRects["text"][7])
@@ -942,30 +649,6 @@ class MenuBox:
         self.yPlus = 0
         for x in self.displayLines:            
             self.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, 312 + self.yPlus + 4))
-=======
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][1])              
-                    elif y == self.otheryCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][7])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][4])
-                elif x == self.otherxCount - 1:
-                    if y == 0:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][3])              
-                    elif y == self.otheryCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][9])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][6])
-                else:
-                    if y == 0:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][2])              
-                    elif y == self.otheryCount-1:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][8])
-                    else:
-                        GlobalData.display.getScreen().blit(GlobalData.textureManager.textures["text"][0], (456-48 + x*24, 312 + y*24), GlobalData.textureManager.spriteRects["text"][5])                  
-        self.yPlus = 0
-        for x in GlobalData.displayLines:            
-            GlobalData.display.getScreen().blit(self.font.render(x, 0, (255,255,255)), (456-48 + 6, 312 + self.yPlus + 4))
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
             self.yPlus += 32        
         #pygame.display.flip()
         #pygame.time.delay(150)
@@ -978,8 +661,5 @@ class MenuBox:
         self.draw()
         self.show()
         pygame.display.flip()
-       
-<<<<<<< HEAD
         self.selected = False
-=======
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
+

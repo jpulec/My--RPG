@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-=======
 
-
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
 import pygame,sys
 
 class ImageData:

@@ -11,7 +11,6 @@ Use 'i' to open the inventory (it needs a lot of work)
 
 Use Alt+Enter to enter and leave fullscreen
 
-<<<<<<< HEAD
 Press '`' (tilde) to enter debug mode
 
 ----------DEBUG MODE----------------
@@ -22,6 +21,3 @@ Press '`' (tilde) to enter debug mode
 
 F1 toggles Monsters on and off based on location
 
-=======
-F1 toggles Monsters on and off based on location
->>>>>>> ca2130befcd2831510f8fded56024422daa3eae2
