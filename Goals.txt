@@ -1,7 +1,0 @@
-Goals:
-
-1. Separate battle system to its own class  **      
-2. Start Menu/probably make it its own class too
-3. Other characters
-4. Fix battle mechanics
-5. Flesh out world/maps
